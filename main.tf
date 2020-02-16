@@ -7,8 +7,8 @@ terraform {
 
 locals {
   common_tags = {
-    "Name" = var.name
-    "Terraform"   = true
+    "Name"      = var.name
+    "Terraform" = true
   }
 
   tags = merge(var.tags, local.common_tags)
@@ -17,7 +17,7 @@ locals {
 resource random_pet "this" {}
 
 data template_file "var_file" {
-  template = jsonencode(merge(var.packer_vars, {"distro" = var.distro}, {"node" = var.node}))
+  template = jsonencode(merge(var.packer_vars, { "distro" = var.distro }, { "node" = var.node }))
 }
 
 resource "null_resource" "write_cfg" {
@@ -40,7 +40,7 @@ resource "null_resource" "this" {
   provisioner "local-exec" {
     command = <<-EOT
 packer build \
-%{ if var.packer_vars != {} }-var-file='${path.module}/vars.json'%{ endif } \
+%{if var.packer_vars != {} }-var-file='${path.module}/vars.json'%{endif} \
 ${var.packer_config_path}
 EOT
   }

@@ -1,31 +1,31 @@
 variable "name" {
-  type = string
+  type    = string
   default = "node"
 }
 
 variable "distro" {
-  type = string
+  type        = string
   description = "The distro, ie - debian-9, ubuntu-18"
 }
 
 variable "node" {
-  type = string
+  type        = string
   description = "the node type of node, citizen, p-rep"
 }
 
 variable "tags" {
   description = "Tags that are appended"
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }
 
 variable "packer_config_path" {
   description = "The abs path to the packer config file"
-  type = string
+  type        = string
 }
 
 variable "packer_vars" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
