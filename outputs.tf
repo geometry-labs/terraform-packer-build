@@ -1,3 +1,3 @@
-output "ami_id" {
-  value = data.aws_ami.ami_id.id
+output "packer_command" {
+  value = data.template_file.command.rendered
 }

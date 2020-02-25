@@ -3,6 +3,7 @@
 # Terraform and terragrunt
 *.tfstate/
 *.tfstate.backup
+*.tfstate
 *.tfplan
 .terragrunt-cache/
 .terraform/

@@ -1,35 +1,34 @@
-data "aws_caller_identity" "this" {}
-data "aws_region" "current" {}
-
 terraform {
   required_version = ">= 0.12"
 }
 
-locals {
-  common_tags = {
-    "Name"      = var.name
-    "Terraform" = true
-  }
-
-  tags = merge(var.tags, local.common_tags)
+resource template_file "var_file" {
+  count    = length(var.packer_vars) > 0 ? 1 : 0
+  template = jsonencode(var.packer_vars)
 }
 
-resource random_pet "this" {}
-
-data template_file "var_file" {
-  template = jsonencode(merge(var.packer_vars, { "distro" = var.distro }, { "node" = var.node }))
+resource "local_file" "var_file" {
+  count    = length(var.packer_vars) > 0 ? 1 : 0
+  content  = template_file.var_file.*.rendered[0]
+  filename = "${path.module}/var_file.json"
 }
 
-resource "null_resource" "write_cfg" {
-  triggers = {
-    appply_time = timestamp()
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-echo '${data.template_file.var_file.rendered}' >> ${path.module}/vars.json
+data "template_file" "command" {
+  template = <<-EOT
+packer build \
+%{if var.on_error != "cleanup"}-on-error=${var.on_error}%{endif} \
+%{if ! var.color}-color=false%{endif} \
+%{if var.debug}-debug%{endif} \
+%{if length(var.except) > 0}-except=${join(",", var.except)}%{endif} \
+%{if var.force}-force%{endif} \
+%{if length(var.only) > 0}-only=${join(",", var.only)}%{endif} \
+%{if var.parallel_builds > 0}-parallel-builds=${var.parallel_builds}%{endif} \
+%{if var.timestamp_ui}-timestamp-ui%{endif} \
+%{if length(var.vars) > 0}%{for k, v in var.vars}-var '${k}=${v}' %{endfor}%{endif} \
+%{if length(var.packer_vars) > 0}-var-file='${path.module}/var_file.json'%{endif} \
+%{if var.var_file != ""}-var-file=${var.var_file}%{endif} \
+${var.packer_config_path}
 EOT
-  }
 }
 
 resource "null_resource" "this" {
@@ -38,25 +37,8 @@ resource "null_resource" "this" {
   }
 
   provisioner "local-exec" {
-    command = <<-EOT
-packer build \
-%{if var.packer_vars != {} }-var-file='${path.module}/vars.json'%{endif} \
-${var.packer_config_path}
-EOT
+    command = data.template_file.command.rendered
   }
-  depends_on = [null_resource.write_cfg]
-}
-
-data "aws_ami" "ami_id" {
-  most_recent = true
-
-  tags = {
-    Name   = var.node
-    Distro = var.distro
-  }
-
-  owners = ["self"]
-
-  depends_on = [null_resource.this]
+  depends_on = [local_file.var_file]
 }
 

@@ -33,27 +33,33 @@ No issue is creating limit on this module.
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
+| local | n/a |
 | null | n/a |
-| random | n/a |
 | template | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| distro | The distro, ie - debian-9, ubuntu-18 | `string` | n/a | yes |
-| name | n/a | `string` | `"node"` | no |
-| node | the node type of node, citizen, p-rep | `string` | n/a | yes |
+| color | n/a | `bool` | `true` | no |
+| debug | Disables parallelization and enables debug mode. | `bool` | `false` | no |
+| except | Run all the builds and post-processors except this list | `list(string)` | `[]` | no |
+| force | Forces a builder to run when artifacts from a previous build prevent a build from running | `bool` | `false` | no |
+| on\_error | Selects what to do when the build fails | `string` | `"cleanup"` | no |
+| only | Only run the builds with the given comma-separated names | `list(string)` | `[]` | no |
 | packer\_config\_path | The abs path to the packer config file | `string` | n/a | yes |
-| packer\_vars | n/a | `map(string)` | `{}` | no |
+| packer\_vars | A map of variables to use in packer | `map(string)` | `{}` | no |
+| parallel\_builds | Limit the number of builds to run in parallel | `number` | `0` | no |
 | tags | Tags that are appended | `map(string)` | `{}` | no |
+| timestamp\_ui | Enable prefixing of each ui output with an RFC3339 timestamp | `bool` | `false` | no |
+| var\_file | JSON file containing user variables | `string` | `""` | no |
+| vars | A map of key value pairs to be used as var option | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ami\_id | n/a |
+| packer\_command | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
