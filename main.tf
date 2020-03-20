@@ -9,7 +9,7 @@ resource template_file "var_file" {
 
 resource "local_file" "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
-  content  = template_file.var_file.*.rendered[0]
+  content  = join("", template_file.var_file.*.rendered)
   filename = "${path.module}/var_file.json"
 }
 
@@ -32,13 +32,18 @@ EOT
 }
 
 resource "null_resource" "this" {
+  count = var.create ? 1 : 0
+
   triggers = {
-    apply_time = timestamp()
+    apply_time    = var.apply_always ? timestamp() : "Don't diff"
+    packer_config = filesha1(var.packer_config_path)
+    var_file      = join("", local_file.var_file.*.content_base64)
+    command       = join("", data.template_file.command.*.rendered)
   }
 
   provisioner "local-exec" {
     command = data.template_file.command.rendered
   }
+
   depends_on = [local_file.var_file]
 }
-

@@ -1,4 +1,14 @@
+variable "create" {
+  description = "Bool to create resources"
+  type        = bool
+  default     = true
+}
 
+variable "apply_always" {
+  description = "Bool to make it run even if there is no change in packer conf or vars."
+  type        = bool
+  default     = false
+}
 
 variable "tags" {
   description = "Tags that are appended"
@@ -11,12 +21,12 @@ variable "packer_config_path" {
   type        = string
 }
 
-
 variable "timestamp_ui" {
   description = "Enable prefixing of each ui output with an RFC3339 timestamp"
   type        = bool
   default     = false
 }
+
 variable "parallel_builds" {
   description = "Limit the number of builds to run in parallel"
   type        = number

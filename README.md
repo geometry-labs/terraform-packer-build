@@ -41,7 +41,9 @@ No issue is creating limit on this module.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| apply\_always | Bool to make it run even if there is no change in packer conf or vars. | `bool` | `false` | no |
 | color | n/a | `bool` | `true` | no |
+| create | Bool to create resources | `bool` | `true` | no |
 | debug | Disables parallelization and enables debug mode. | `bool` | `false` | no |
 | except | Run all the builds and post-processors except this list | `list(string)` | `[]` | no |
 | force | Forces a builder to run when artifacts from a previous build prevent a build from running | `bool` | `false` | no |
