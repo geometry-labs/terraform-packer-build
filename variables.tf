@@ -71,7 +71,7 @@ variable "only" {
 
 variable "vars" {
   description = "A map of key value pairs to be used as var option"
-  type        = map(string)
+  type        = map(any)
   default     = {}
 }
 
