@@ -71,7 +71,7 @@ variable "only" {
 
 variable "vars" {
   description = "A map of key value pairs to be used as var option"
-  type        = map(any)
+  type        = map(string)
   default     = {}
 }
 
@@ -83,6 +83,6 @@ variable "var_file" {
 
 variable "packer_vars" {
   description = "A map of variables to use in packer"
-  type        = map(any)
+  type        = object
   default     = {}
 }
