@@ -83,6 +83,6 @@ variable "var_file" {
 
 variable "packer_vars" {
   description = "A map of variables to use in packer"
-  type        = map(string)
+  type        = map(any)
   default     = {}
 }
