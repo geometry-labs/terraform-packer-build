@@ -2,14 +2,14 @@ terraform {
   required_version = ">= 0.12"
 }
 
-resource template_file "var_file" {
+data template_file "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
   template = jsonencode(var.packer_vars)
 }
 
 resource "local_file" "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
-  content  = join("", template_file.var_file.*.rendered)
+  content  = join("", data.template_file.var_file.*.rendered)
   filename = "${path.module}/var_file.json"
 }
 
