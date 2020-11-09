@@ -9,7 +9,7 @@ data template_file "var_file" {
 
 resource "local_file" "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
-  content  = join("", data.template_file.var_file.*.rendered)
+  content  = data.template_file.var_file[*].rendered
   filename = "${path.module}/var_file.json"
 }
 
