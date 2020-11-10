@@ -37,7 +37,7 @@ resource "null_resource" "this" {
   triggers = {
     apply_time    = var.apply_always ? timestamp() : "Don't diff"
     packer_config = filesha1(var.packer_config_path)
-    var_file      = join("", local_file.var_file.*.content_base64)
+    var_file      = local_file.var_file.0.content_base64
     command       = join("", data.template_file.command.*.rendered)
   }
 
