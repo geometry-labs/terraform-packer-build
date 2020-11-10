@@ -4,7 +4,7 @@ terraform {
 
 data template_file "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
-  template = jsonencode(var.packer_vars)
+  template = jsonencode({variables = var.packer_vars})
 }
 
 resource "local_file" "var_file" {
