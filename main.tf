@@ -2,14 +2,14 @@ terraform {
   required_version = ">= 0.12"
 }
 
-data template_file "var_file" {
+resource template_file "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
   template = jsonencode(var.packer_vars)
 }
 
 resource "local_file" "var_file" {
   count    = length(var.packer_vars) > 0 ? 1 : 0
-  content  = data.template_file.var_file.0.rendered
+  content  = join("", template_file.var_file.*.rendered)
   filename = "${path.module}/var_file.json"
 }
 
@@ -37,7 +37,7 @@ resource "null_resource" "this" {
   triggers = {
     apply_time    = var.apply_always ? timestamp() : "Don't diff"
     packer_config = filesha1(var.packer_config_path)
-    var_file      = local_file.var_file.0.content_base64
+    var_file      = join("", local_file.var_file.*.content_base64)
     command       = join("", data.template_file.command.*.rendered)
   }
 
