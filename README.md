@@ -1,12 +1,6 @@
 # terraform-aws-packer-ami
 
-> WIP
-
-## Features
-
 This module runs packer from a terraform module.
-
-> Note: This is an early work and will be evolving to wrap many other packer functions and workflows.
 
 ## Terraform versions
 
@@ -14,16 +8,15 @@ For Terraform v0.12.0+
 
 ## Usage
 
-```
+```hcl-terraform
 module "this" {
-    source = "github.com/insight-infrastructure/terraform-aws-packer-ami"
-
+  source = "github.com/insight-infrastructure/terraform-aws-packer-ami"
 }
 ```
 
 ## Examples
 
-- [defaults](https://github.com/robc-io/terraform-aws-packer-ami/tree/master/examples/defaults)
+- [defaults](https://github.com/geometry-labs/terraform-aws-packer-ami/tree/master/examples/defaults)
 
 ## Known issues
 No issue is creating limit on this module.
@@ -67,11 +60,7 @@ No issue is creating limit on this module.
 
 ## Authors
 
-Module managed by [robc-io](github.com/robc-io)
-
-## Credits
-
-- [Anton Babenko](https://github.com/antonbabenko)
+Module managed by [Geometry Labs](github.com/geometry-labs)
 
 ## License
 
